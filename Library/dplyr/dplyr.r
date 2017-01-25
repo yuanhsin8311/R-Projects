@@ -8,10 +8,10 @@ mydata
 
 ## CSV file
 # sep ="\t"  ","  " "
-
 data = read.csv("data.csv",header=TRUE, sep=",")
 
-
+## Dataset: nycflights13
+# this dataset contains 336,776 flights that departed from New York City in 2013.
 
 
 
