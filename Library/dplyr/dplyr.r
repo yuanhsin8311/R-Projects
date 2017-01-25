@@ -1,16 +1,16 @@
-# Data Manipulation Package
-
-# Read text file
+### Data Manipulation Package
+## Read text file
 mydata = read.table("mydata.txt",header=FALSE,sep="")
-# Print data frame
+## Print data frame
 mydata
-# Help
+## Help
 ? read.table
 
-# CSV file
+## CSV file
 # sep ="\t"  ","  " "
 
 data = read.csv("data.csv",header=TRUE, sep=",")
+
 
 
 
