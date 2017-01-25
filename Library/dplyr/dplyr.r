@@ -28,4 +28,6 @@ head(flights)
 # filter()
 filter_1 <- filter(flights,months==9 | months==10 ,day<2)
 # slice()
-
+slice_1 <- slice(flights,1:10)
+# arrange()
+arrange(
