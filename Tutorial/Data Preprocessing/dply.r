@@ -388,10 +388,8 @@ dplyr provides a handful of others:
 For example, we could use these to find the number of planes and the number of flights that go to each possible destination:
 
 destinations <- group_by(flights, dest)
-summarise(destinations,
-  planes = n_distinct(tailnum),
-  flights = n()
-)
+summarise(destinations,planes = n_distinct(tailnum),flights = n())
+          
 #> # A tibble: 105 x 3
 #>    dest planes flights
 #>   <chr>  <int>   <int>
@@ -400,9 +398,13 @@ summarise(destinations,
 #> 3   ALB    172     439
 #> 4   ANC      6       8
 #> ... with 101 more rows
-You can also use any function that you write yourself. For performance, dplyr provides optimised C++ versions of many of these functions. If you want to provide your own C++ function, see the hybrid-evaluation vignette for more details.
 
-When you group by multiple variables, each summary peels off one level of the grouping. That makes it easy to progressively roll-up a dataset:
+You can also use any function that you write yourself. 
+For performance, dplyr provides optimised C++ versions of many of these functions. 
+If you want to provide your own C++ function, see the hybrid-evaluation vignette for more details.
+
+When you group by multiple variables, each summary peels off one level of the grouping. 
+That makes it easy to progressively roll-up a dataset:
 
 daily <- group_by(flights, year, month, day)
 (per_day   <- summarise(daily, flights = n()))
@@ -434,7 +436,9 @@ daily <- group_by(flights, year, month, day)
 #>    year flights
 #>   <int>   <int>
 #> 1  2013  336776
-However you need to be careful when progressively rolling up summaries like this: it’s ok for sums and counts, but you need to think about weighting for means and variances (it’s not possible to do this exactly for medians).
+However you need to be careful when progressively rolling up summaries like this: 
+it’s ok for sums and counts, but you need to think about weighting for means and variances 
+(it’s not possible to do this exactly for medians).
 
 # Chaining
 
