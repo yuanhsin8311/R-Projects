@@ -481,7 +481,10 @@ filter(
 #> ... with 45 more rows
 This is difficult to read because the order of the operations is from inside to out. 
 Thus, the arguments are a long way away from the function. 
-To get around this problem, dplyr provides the %>% operator. x %>% f(y) turns into f(x, y) so you can use it to rewrite multiple operations that you can read left-to-right, top-to-bottom:
+
+To get around this problem, dplyr provides the %>% operator. 
+x %>% f(y) turns into f(x, y),so you can use it to rewrite multiple operations that you can read left-to-right, 
+top-to-bottom:
 
 flights %>%
   group_by(year, month, day) %>%
@@ -491,58 +494,63 @@ flights %>%
     dep = mean(dep_delay, na.rm = TRUE)
   ) %>%
   filter(arr > 30 | dep > 30)
-Other data sources
+  
+# Other data sources
 
-As well as data frames, dplyr works with data that is stored in other ways, like data tables, databases and multidimensional arrays.
+As well as data frames, dplyr works with data that is stored in other ways, 
+like data tables, databases and multidimensional arrays.
 
-Data table
+1. Data table
 
-dplyr also provides data table methods for all verbs through dtplyr. If you’re using data.tables already this lets you to use dplyr syntax for data manipulation, and data.table for everything else.
+dplyr also provides data table methods for all verbs through dtplyr. 
+If you’re using data.tables already this lets you to use dplyr syntax for data manipulation, and data.table for everything else.
 
-For multiple operations, data.table can be faster because you usually use it with multiple verbs simultaneously. For example, with data table you can do a mutate and a select in a single step. It’s smart enough to know that there’s no point in computing the new variable for rows you’re about to throw away.
+For multiple operations, data.table can be faster because you usually use it with multiple verbs simultaneously. 
+For example, with data table you can do a mutate and a select in a single step. 
+It’s smart enough to know that there’s no point in computing the new variable for rows you’re about to throw away.
 
 The advantages of using dplyr with data tables are:
+(1) For common data manipulation tasks, it insulates you from the reference semantics of data.tables, 
+and protects you from accidentally modifying your data.
+(2) Instead of one complex method built on the subscripting operator ([), it provides many simple methods.
 
-For common data manipulation tasks, it insulates you from the reference semantics of data.tables, and protects you from accidentally modifying your data.
+2. Databases
 
-Instead of one complex method built on the subscripting operator ([), it provides many simple methods.
-
-Databases
-
-dplyr also allows you to use the same verbs with a remote database. It takes care of generating the SQL for you so that you can avoid the cognitive challenge of constantly switching between languages. See the databases vignette for more details.
+dplyr also allows you to use the same verbs with a remote database. 
+It takes care of generating the SQL for you so that you can avoid the cognitive challenge of constantly switching 
+between languages. See the databases vignette for more details.
 
 Compared to DBI and the database connection algorithms:
-
 it hides, as much as possible, the fact that you’re working with a remote database
 you don’t need to know any SQL (although it helps!)
 it abstracts over the many differences between the different DBI implementations
-Multidimensional arrays / cubes
 
-tbl_cube() provides an experimental interface to multidimensional arrays or data cubes. If you’re using this form of data in R, please get in touch so I can better understand your needs.
+3. Multidimensional arrays / cubes
+tbl_cube() provides an experimental interface to multidimensional arrays or data cubes. 
+If you’re using this form of data in R, please get in touch so I can better understand your needs.
 
-Comparisons
+# Comparisons
+1. Compared to all existing options, dplyr:
+abstracts away how your data is stored, so that you can work with data frames, data tables and remote databases 
+using the same set of functions. 
+This lets you focus on what you want to achieve, not on the logistics of data storage.
 
-Compared to all existing options, dplyr:
+provides a thoughtful default print() method that doesn’t automatically print pages of data to the screen 
+(this was inspired by data table’s output).
 
-abstracts away how your data is stored, so that you can work with data frames, data tables and remote databases using the same set of functions. This lets you focus on what you want to achieve, not on the logistics of data storage.
+2. Compared to base functions:
 
-provides a thoughtful default print() method that doesn’t automatically print pages of data to the screen (this was inspired by data table’s output).
-
-Compared to base functions:
-
-dplyr is much more consistent; functions have the same interface. So once you’ve mastered one, you can easily pick up the others
-
+dplyr is much more consistent; functions have the same interface. 
+So once you’ve mastered one, you can easily pick up the others
 base functions tend to be based around vectors; dplyr is based around data frames
 
-Compared to plyr, dplyr:
-
+3. Compared to plyr, dplyr:
 is much much faster
-
 provides a better thought out set of joins
+only provides tools for working with data frames 
+(e.g. most of dplyr is equivalent to ddply() + various functions, do() is equivalent to dlply())
 
-only provides tools for working with data frames (e.g. most of dplyr is equivalent to ddply() + various functions, do() is equivalent to dlply())
-
-Compared to virtual data frame approaches:
+4. Compared to virtual data frame approaches:
 
 it doesn’t pretend that you have a data frame: if you want to run lm etc, you’ll still need to manually pull down the data
 
