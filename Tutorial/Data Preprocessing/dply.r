@@ -150,7 +150,7 @@ select(flights, year, month, day)
 #> 4  2013     1     1
 #> ... with 336,772 more rows
 
-# Select all columns between year and day (inclusive)
+select all columns between year and day (inclusive)
 select(flights, year:day)
 #> # A tibble: 336,776 x 3
 #>    year month   day
@@ -161,7 +161,7 @@ select(flights, year:day)
 #> 4  2013     1     1
 #> ... with 336,772 more rows
 
-# Select all columns except those from year to day (inclusive)
+Select all columns except those from year to day (inclusive)
 select(flights, -(year:day))
 #> # A tibble: 336,776 x 16
 #>   dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay
@@ -173,12 +173,14 @@ select(flights, -(year:day))
 #> ... with 336,772 more rows, and 10 more variables: carrier <chr>,
 #>   flight <int>, tailnum <chr>, origin <chr>, dest <chr>, air_time <dbl>,
 #>   distance <dbl>, hour <dbl>, minute <dbl>, time_hour <time>
-This function works similarly to the select argument in base::subset(). Because the dplyr philosophy is to have small functions that do one thing well, it’s its own function in dplyr.
+This function works similarly to the select argument in base::subset(). 
+Because the dplyr philosophy is to have small functions that do one thing well, it’s its own function in dplyr.
 
-There are a number of helper functions you can use within select(), like starts_with(), ends_with(), matches() and contains(). These let you quickly match larger blocks of variables that meet some criterion. See ?select for more details.
-
+There are a number of helper functions you can use within select(), 
+like starts_with(), ends_with(), matches() and contains(). 
+These let you quickly match larger blocks of variables that meet some criterion. See ?select for more details.
+  
 You can rename variables with select() by using named arguments:
-
 select(flights, tail_num = tailnum)
 #> # A tibble: 336,776 x 1
 #>   tail_num
@@ -188,8 +190,8 @@ select(flights, tail_num = tailnum)
 #> 3   N619AA
 #> 4   N804JB
 #> ... with 336,772 more rows
-But because select() drops all the variables not explicitly mentioned, it’s not that useful. Instead, use rename():
 
+But because select() drops all the variables not explicitly mentioned, it’s not that useful. Instead, use rename():
 rename(flights, tail_num = tailnum)
 #> # A tibble: 336,776 x 19
 #>    year month   day dep_time sched_dep_time dep_delay arr_time
@@ -203,9 +205,9 @@ rename(flights, tail_num = tailnum)
 #>   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
 #>   minute <dbl>, time_hour <time>
 
-# Extract distinct (unique) rows
+# 5. Extract distinct (unique) rows
 
-Use distinct()to find unique values in a table:
+Use distinct() to find unique values in a table:
 
 distinct(flights, tailnum)
 #> # A tibble: 4,044 x 1
