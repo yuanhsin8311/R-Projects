@@ -230,13 +230,12 @@ distinct(flights, origin, dest)
 (This is very similar to base::unique() but should be much faster.)
 
 
-# Add new columns with mutate()
+# 6. Add new columns with mutate()
 
-Besides selecting sets of existing columns, it’s often useful to add new columns that are functions of existing columns. This is the job of mutate():
+Besides selecting sets of existing columns, it’s often useful to add new columns that are functions of existing columns. 
+This is the job of mutate():
 
-mutate(flights,
-  gain = arr_delay - dep_delay,
-  speed = distance / air_time * 60)
+mutate(flights,gain = arr_delay - dep_delay,speed = distance / air_time * 60)
 #> # A tibble: 336,776 x 21
 #>    year month   day dep_time sched_dep_time dep_delay arr_time
 #>   <int> <int> <int>    <int>          <int>     <dbl>    <int>
@@ -248,12 +247,11 @@ mutate(flights,
 #>   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
 #>   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
 #>   minute <dbl>, time_hour <time>, gain <dbl>, speed <dbl>
-dplyr::mutate() works the same way as plyr::mutate() and similarly to base::transform(). The key difference between mutate() and transform() is that mutate allows you to refer to columns that you’ve just created:
+dplyr::mutate() works the same way as plyr::mutate() and similarly to base::transform(). 
+** The key difference between mutate() and transform() is that 
+** mutate allows you to refer to columns that you’ve just created:
 
-mutate(flights,
-  gain = arr_delay - dep_delay,
-  gain_per_hour = gain / (air_time / 60)
-)
+mutate(flights,gain = arr_delay - dep_delay,gain_per_hour = gain / (air_time / 60))
 #> # A tibble: 336,776 x 21
 #>    year month   day dep_time sched_dep_time dep_delay arr_time
 #>   <int> <int> <int>    <int>          <int>     <dbl>    <int>
@@ -265,17 +263,11 @@ mutate(flights,
 #>   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
 #>   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
 #>   minute <dbl>, time_hour <time>, gain <dbl>, gain_per_hour <dbl>
-transform(flights,
-  gain = arr_delay - delay,
-  gain_per_hour = gain / (air_time / 60)
-)
+transform(flights,gain = arr_delay - delay,gain_per_hour = gain / (air_time / 60))
 #> Error: object 'gain' not found
 If you only want to keep the new variables, use transmute():
 
-transmute(flights,
-  gain = arr_delay - dep_delay,
-  gain_per_hour = gain / (air_time / 60)
-)
+transmute(flights,gain = arr_delay - dep_delay,gain_per_hour = gain / (air_time / 60))
 #> # A tibble: 336,776 x 2
 #>    gain gain_per_hour
 #>   <dbl>         <dbl>
@@ -284,24 +276,24 @@ transmute(flights,
 #> 3    31     11.625000
 #> 4   -17     -5.573770
 #> ... with 336,772 more rows
+ 
 
+# 7. Summarise values with summarise()
 
-# Summarise values with summarise()
+The last verb is summarise(). 
+It collapses a data frame to a single row (this is exactly equivalent to plyr::summarise()):
 
-The last verb is summarise(). It collapses a data frame to a single row (this is exactly equivalent to plyr::summarise()):
-
-summarise(flights,
-  delay = mean(dep_delay, na.rm = TRUE))
+summarise(flights,delay = mean(dep_delay, na.rm = TRUE))
 #> # A tibble: 1 x 1
 #>      delay
 #>      <dbl>
 #> 1 12.63907
+
 Below, we’ll see how this verb can be very useful.
+Randomly sample rows with sample_n() and sample_frac()
 
-
-# Randomly sample rows with sample_n() and sample_frac()
-
-You can use sample_n() and sample_frac() to take a random sample of rows: use sample_n() for a fixed number and sample_frac() for a fixed fraction.
+You can use sample_n() and sample_frac() to take a random sample of rows: 
+use sample_n() for a fixed number and sample_frac() for a fixed fraction.
 
 sample_n(flights, 10)
 #> # A tibble: 10 x 19
@@ -333,59 +325,65 @@ Use replace = TRUE to perform a bootstrap sample. If needed, you can weight the 
 # Commonalities
 
 You may have noticed that the syntax and function of all these verbs are very similar:
-
 The first argument is a data frame.
-
-The subsequent arguments describe what to do with the data frame. Notice that you can refer to columns in the data frame directly without using $.
-
+The subsequent arguments describe what to do with the data frame. 
+Notice that you can refer to columns in the data frame directly without using $.
 The result is a new data frame
-
 Together these properties make it easy to chain together multiple simple steps to achieve a complex result.
+These five functions provide the basis of a language of data manipulation. 
 
-These five functions provide the basis of a language of data manipulation. At the most basic level, you can only alter a tidy data frame in five useful ways: you can reorder the rows (arrange()), pick observations and variables of interest (filter() and select()), add new variables that are functions of existing variables (mutate()), or collapse many values to a summary (summarise()). The remainder of the language comes from applying the five functions to different types of data. For example, I’ll discuss how these functions work with grouped data.
+At the most basic level, you can only alter a tidy data frame in five useful ways: 
+you can reorder the rows (arrange()), pick observations and variables of interest (filter() and select()), 
+add new variables that are functions of existing variables (mutate()), 
+or collapse many values to a summary (summarise()). 
+The remainder of the language comes from applying the five functions to different types of data. 
+  
+For example, I’ll discuss how these functions work with grouped data.
 
 
 # Grouped operations
 
-These verbs are useful on their own, but they become really powerful when you apply them to groups of observations within a dataset. In dplyr, you do this by with the group_by() function. It breaks down a dataset into specified groups of rows. When you then apply the verbs above on the resulting object they’ll be automatically applied “by group”. Most importantly, all this is achieved by using the same exact syntax you’d use with an ungrouped object.
+These verbs are useful on their own, but they become really powerful 
+when you apply them to groups of observations within a dataset. 
+
+In dplyr, you do this by with the group_by() function. 
+It breaks down a dataset into specified groups of rows. 
+When you then apply the verbs above on the resulting object they’ll be automatically applied “by group”. 
+Most importantly, all this is achieved by using the same exact syntax you’d use with an ungrouped object.
 
 Grouping affects the verbs as follows:
+1. grouped select() is the same as ungrouped select(), except that grouping variables are always retained.
+2. grouped arrange() orders first by the grouping variables
+3. mutate() and filter() are most useful in conjunction with window functions 
+  (like rank(), or min(x) == x). They are described in detail in vignette("window-functions").
+4. sample_n() and sample_frac() sample the specified number/fraction of rows in each group.
+5. slice() extracts rows within each group.
+6. summarise() is powerful and easy to understand, as described in more detail below.
 
-grouped select() is the same as ungrouped select(), except that grouping variables are always retained.
-
-grouped arrange() orders first by the grouping variables
-
-mutate() and filter() are most useful in conjunction with window functions (like rank(), or min(x) == x). They are described in detail in vignette("window-functions").
-
-sample_n() and sample_frac() sample the specified number/fraction of rows in each group.
-
-slice() extracts rows within each group.
-
-summarise() is powerful and easy to understand, as described in more detail below.
-
-In the following example, we split the complete dataset into individual planes and then summarise each plane by counting the number of flights (count = n()) and computing the average distance (dist = mean(Distance, na.rm = TRUE)) and arrival delay (delay = mean(ArrDelay, na.rm = TRUE)). We then use ggplot2 to display the output.
+In the following example, we split the complete dataset into individual planes and then 
+summarise each plane by counting the number of flights (count = n()) 
+and computing the average distance (dist = mean(Distance, na.rm = TRUE)) 
+and arrival delay (delay = mean(ArrDelay, na.rm = TRUE)). 
+We then use ggplot2 to display the output.
 
 by_tailnum <- group_by(flights, tailnum)
-delay <- summarise(by_tailnum,
-  count = n(),
-  dist = mean(distance, na.rm = TRUE),
-  delay = mean(arr_delay, na.rm = TRUE))
+delay <- summarise(by_tailnum,count = n(),dist = mean(distance, na.rm = TRUE),delay = mean(arr_delay, na.rm = TRUE))
 delay <- filter(delay, count > 20, dist < 2000)
-
-# Interestingly, the average delay is only slightly related to the
-# average distance flown by a plane.
+  
+# Interestingly, the average delay is only slightly related to the average distance flown by a plane.
 ggplot(delay, aes(dist, delay)) +
   geom_point(aes(size = count), alpha = 1/2) +
   geom_smooth() +
   scale_size_area()
 
-You use summarise() with aggregate functions, which take a vector of values and return a single number. There are many useful examples of such functions in base R like min(), max(), mean(), sum(), sd(), median(), and IQR(). dplyr provides a handful of others:
+You use summarise() with aggregate functions, which take a vector of values and return a single number. 
+There are many useful examples of such functions in base R like min(), max(), mean(), sum(), sd(), median(), and IQR(). 
 
-n(): the number of observations in the current group
-
-n_distinct(x):the number of unique values in x.
-
-first(x), last(x) and nth(x, n) - these work similarly to x[1], x[length(x)], and x[n] but give you more control over the result if the value is missing.
+dplyr provides a handful of others:
+1. n(): the number of observations in the current group
+2. n_distinct(x):the number of unique values in x.
+3. first(x), last(x) and nth(x, n) - these work similarly to x[1], x[length(x)], and x[n] 
+   but give you more control over the result if the value is missing.
 
 For example, we could use these to find the number of planes and the number of flights that go to each possible destination:
 
