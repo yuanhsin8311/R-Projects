@@ -69,12 +69,16 @@ filter(flights, month == 1, day == 1)
 #>   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
 #>   minute <dbl>, time_hour <time>
 This is equivalent to the more verbose code in base R:
+ flights[flights$month == 1 & flights$day == 1, ]
 
-flights[flights$month == 1 & flights$day == 1, ]
-filter() works similarly to subset() except that you can give it any number of filtering conditions, which are joined together with & (not && which is easy to do accidentally!). You can also use other boolean operators:
+*** filter() works similarly to subset() 
+    except that you can give it any number of filtering conditions, which are joined together with & 
+(not && which is easy to do accidentally!). 
 
+You can also use other boolean operators:
 filter(flights, month == 1 | month == 2)
-To select rows by position, use slice():
+
+# 2. To select rows by position, use slice():
 
 slice(flights, 1:10)
 #> # A tibble: 10 x 19
@@ -89,8 +93,114 @@ slice(flights, 1:10)
 #>   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
 #>   minute <dbl>, time_hour <time>
 
+# 3. Arrange rows with arrange()
+arrange() works similarly to filter() 
+except that instead of filtering or selecting rows, it reorders them. 
+It takes a data frame, and a set of column names (or more complicated expressions) to order by. 
+If you provide more than one column name, each additional column will be used to break ties 
+in the values of preceding columns:
 
+arrange(flights, year, month, day)
+#> # A tibble: 336,776 x 19
+#>    year month   day dep_time sched_dep_time dep_delay arr_time
+#>   <int> <int> <int>    <int>          <int>     <dbl>    <int>
+#> 1  2013     1     1      517            515         2      830
+#> 2  2013     1     1      533            529         4      850
+#> 3  2013     1     1      542            540         2      923
+#> 4  2013     1     1      544            545        -1     1004
+#> ... with 336,772 more rows, and 12 more variables: sched_arr_time <int>,
+#>   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
+#>   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+#>   minute <dbl>, time_hour <time>
 
+Use desc() to order a column in descending order:
+arrange(flights, desc(arr_delay))
+#> # A tibble: 336,776 x 19
+#>    year month   day dep_time sched_dep_time dep_delay arr_time
+#>   <int> <int> <int>    <int>          <int>     <dbl>    <int>
+#> 1  2013     1     9      641            900      1301     1242
+#> 2  2013     6    15     1432           1935      1137     1607
+#> 3  2013     1    10     1121           1635      1126     1239
+#> 4  2013     9    20     1139           1845      1014     1457
+#> ... with 336,772 more rows, and 12 more variables: sched_arr_time <int>,
+#>   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
+#>   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+#>   minute <dbl>, time_hour <time>
+
+dplyr::arrange() works the same way as plyr::arrange(). 
+It’s a straightforward wrapper around order() that requires less typing. 
+
+The previous code is equivalent to:
+
+flights[order(flights$year, flights$month, flights$day), ]
+flights[order(flights$arr_delay, decreasing = TRUE), ] or flights[order(-flights$arr_delay), ]
+  
+# Select columns with select()
+
+Often you work with large datasets with many columns but only a few are actually of interest to you. select() allows you to rapidly zoom in on a useful subset using operations that usually only work on numeric variable positions:
+
+# 4. Select columns by name
+select(flights, year, month, day)
+#> # A tibble: 336,776 x 3
+#>    year month   day
+#>   <int> <int> <int>
+#> 1  2013     1     1
+#> 2  2013     1     1
+#> 3  2013     1     1
+#> 4  2013     1     1
+#> ... with 336,772 more rows
+
+# Select all columns between year and day (inclusive)
+select(flights, year:day)
+#> # A tibble: 336,776 x 3
+#>    year month   day
+#>   <int> <int> <int>
+#> 1  2013     1     1
+#> 2  2013     1     1
+#> 3  2013     1     1
+#> 4  2013     1     1
+#> ... with 336,772 more rows
+# Select all columns except those from year to day (inclusive)
+select(flights, -(year:day))
+#> # A tibble: 336,776 x 16
+#>   dep_time sched_dep_time dep_delay arr_time sched_arr_time arr_delay
+#>      <int>          <int>     <dbl>    <int>          <int>     <dbl>
+#> 1      517            515         2      830            819        11
+#> 2      533            529         4      850            830        20
+#> 3      542            540         2      923            850        33
+#> 4      544            545        -1     1004           1022       -18
+#> ... with 336,772 more rows, and 10 more variables: carrier <chr>,
+#>   flight <int>, tailnum <chr>, origin <chr>, dest <chr>, air_time <dbl>,
+#>   distance <dbl>, hour <dbl>, minute <dbl>, time_hour <time>
+This function works similarly to the select argument in base::subset(). Because the dplyr philosophy is to have small functions that do one thing well, it’s its own function in dplyr.
+
+There are a number of helper functions you can use within select(), like starts_with(), ends_with(), matches() and contains(). These let you quickly match larger blocks of variables that meet some criterion. See ?select for more details.
+
+You can rename variables with select() by using named arguments:
+
+select(flights, tail_num = tailnum)
+#> # A tibble: 336,776 x 1
+#>   tail_num
+#>      <chr>
+#> 1   N14228
+#> 2   N24211
+#> 3   N619AA
+#> 4   N804JB
+#> ... with 336,772 more rows
+But because select() drops all the variables not explicitly mentioned, it’s not that useful. Instead, use rename():
+
+rename(flights, tail_num = tailnum)
+#> # A tibble: 336,776 x 19
+#>    year month   day dep_time sched_dep_time dep_delay arr_time
+#>   <int> <int> <int>    <int>          <int>     <dbl>    <int>
+#> 1  2013     1     1      517            515         2      830
+#> 2  2013     1     1      533            529         4      850
+#> 3  2013     1     1      542            540         2      923
+#> 4  2013     1     1      544            545        -1     1004
+#> ... with 336,772 more rows, and 12 more variables: sched_arr_time <int>,
+#>   arr_delay <dbl>, carrier <chr>, flight <int>, tail_num <chr>,
+#>   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+#>   minute <dbl>, time_hour <time>
 
 
 
