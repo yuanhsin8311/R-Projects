@@ -442,7 +442,10 @@ it’s ok for sums and counts, but you need to think about weighting for means a
 
 # Chaining
 
-The dplyr API is functional in the sense that function calls don’t have side-effects. You must always save their results. This doesn’t lead to particularly elegant code, especially if you want to do many operations at once. You either have to do it step-by-step:
+The dplyr API is functional in the sense that function calls don’t have side-effects. 
+You must always save their results. 
+This doesn’t lead to particularly elegant code, especially if you want to do many operations at once. 
+You either have to do it step-by-step:
 
 a1 <- group_by(flights, year, month, day)
 a2 <- select(a1, arr_delay, dep_delay)
@@ -450,6 +453,7 @@ a3 <- summarise(a2,
   arr = mean(arr_delay, na.rm = TRUE),
   dep = mean(dep_delay, na.rm = TRUE))
 a4 <- filter(a3, arr > 30 | dep > 30)
+
 Or if you don’t want to save the intermediate results, you need to wrap the function calls inside each other:
 
 filter(
@@ -475,7 +479,9 @@ filter(
 #> 3  2013     2    11 36.29009 39.07360
 #> 4  2013     2    27 31.25249 37.76327
 #> ... with 45 more rows
-This is difficult to read because the order of the operations is from inside to out. Thus, the arguments are a long way away from the function. To get around this problem, dplyr provides the %>% operator. x %>% f(y) turns into f(x, y) so you can use it to rewrite multiple operations that you can read left-to-right, top-to-bottom:
+This is difficult to read because the order of the operations is from inside to out. 
+Thus, the arguments are a long way away from the function. 
+To get around this problem, dplyr provides the %>% operator. x %>% f(y) turns into f(x, y) so you can use it to rewrite multiple operations that you can read left-to-right, top-to-bottom:
 
 flights %>%
   group_by(year, month, day) %>%
