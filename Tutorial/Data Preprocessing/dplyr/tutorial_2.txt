@@ -1,22 +1,56 @@
-dplyr tutorial
-What is dplyr?
-dplyr is a powerful R-package to transform and summarize tabular data with rows and columns. For another explanation of dplyr see the dplyr package vignette: Introduction to dplyr
+### dplyr tutorial
+## What is dplyr?
+dplyr is a powerful R-package to transform and summarize tabular data with rows and columns. 
+For another explanation of dplyr see the dplyr package vignette: Introduction to dplyr
 
-Why is it useful?
+## Why is it useful?
 The package contains a set of functions (or “verbs”) that perform common data manipulation operations such as filtering for rows, selecting specific columns, re-ordering rows, adding new columns and summarizing data.
 
 In addition, dplyr contains a useful function to perform another common task which is the “split-apply-combine” concept. We will discuss that in a little bit.
 
-How does it compare to using base functions R?
+## How does it compare to using base functions R?
 If you are familiar with R, you are probably familiar with base R functions such as split(), subset(), apply(), sapply(), lapply(), tapply() and aggregate(). Compared to base functions in R, the functions in dplyr are easier to work with, are more consistent in the syntax and are targeted for data analysis around data frames instead of just vectors.
 
-How do I get dplyr?
-To install dplyr
+***** split(), subset(),tapply() and aggregate()
+## 
+1. apply(X, MARGIN, FUN, ...)
+where:
+(1) X is an array or a matrix if the dimension of the array is 2;
+(2) MARGIN is a variable defining how the function is applied: when MARGIN=1, it applies over rows, whereas with MARGIN=2, it works over columns. Note that when you use the construct MARGIN=c(1,2), it applies to both rows and columns; and
+(3) FUN, which is the function that you want to apply to the data. It can be any R function, including a User Defined Function (UDF).
 
+2. lapply()
+You want to apply a given function to every element of a list and obtain a list as result. 
+
+The difference is that:
+
+It can be used for other objects like dataframes, lists or vectors; and
+The output returned is a list (which explains the “l” in the function name), which has the same number of elements as the object passed to it.
+
+# extract the first row from MyList
+lapply(MyList,"[",1,)
+# extract the second column from MyList
+lapply(MyList,"[",,2)
+
+The [ notation is the selection operator. 
+
+3. sapply()
+sapply() is a ‘wrapper’ function for lapply().
+
+
+
+
+
+
+
+
+## How do I get dplyr?
+1. To install dplyr
 install.packages("dplyr")
-To load dplyr
 
+2. To load dplyr
 library(dplyr)
+
 Data: mammals sleep
 The msleep (mammals sleep) data set contains the sleeptimes and weights for a set of mammals and is available in the dagdata repository on github. This data set contains 83 rows and 11 variables.
 
