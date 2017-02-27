@@ -1,1 +1,101 @@
+### Data Import Techniques
 
+# Tips while reading data into R
+# make sure that first row contains header and first column contains row names (ID, name etc)
+# "Customer Name"- avoid giving spaces between the names of the columns
+# coulmn names should be shorter as replacing " " with "."
+# try to avoid names using special symbols: "?,$,#,@,!,%,^,&,*,(,),[,],{,},| "
+# avoid cell merge in excel spreadsheet
+# delete the comments on any cell in an excel book
+
+rm(list=ls())
+
+ls()
+rm("fit")
+
+ls()
+rm(list=ls())
+
+
+getwd()
+[1] "/Users/yuanhsinhuang/Data Scientist/HW/0226/R/Coupon"
+
+setwd("location of the data files")
+
+# Importing Data Files Into R
+
+# Text File
+data <- read.table("tryTextImport.txt")
+# output format is a data frame
+
+# CSV files
+head(mtcars)
+data <- read.table("mycsv.csv",
+                   header=T,
+                   sep=",")
+
+data<-read.csv("mycsv.csv")
+
+data<-read.csv2("mycsv.csv",
+                header = F)
+
+# Files with Separator chanracter
+data<-read.delim("filename.ext")
+
+data<-read.delim2("filename.ext")
+
+
+# Excel File
+install.packages("readxl")
+library(readxl)
+data <- read_excel("myexcle.xlsx",sheet = 1)
+
+
+# JSON File import
+installed.packages()
+install.packages("rjson")
+library(rjson)
+data <- fromJSON(file="finename.json")
+
+# XML Files
+install.packages("XML")
+library(XML)
+data <- xmlTreeParse("web URL to the XML data")
+topnodes<- xmlRoot(data)
+topxml<-xmlSApply(topnodes,
+                 function(x) xmlSApply(x,xmlValue))
+df <- data.frame(t(topxml),row.names = NULL)
+
+# HTML Table
+library(XML)
+url <- "http://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html"
+data_df <- readHTMLTable(url,which = 4)
+head(data_df)
+
+# SPSS Files
+install.packages("foreign")
+library(foreign)
+# read.spss output is by default a list
+data_spss <- read.spss("filename.sav",
+                       to.data.frame = T,
+                       use.value.labels = F)
+# STATA files
+library(foreign)
+data<-read.dta("filename")
+
+# Systat Files
+library(foreign)
+data <- read.systat("filename")
+
+# SAS files
+install.packages("sas7bdat")
+library(sas7bdat)
+data_sas <- read.sas7bdat("filename.sas7bdat")
+
+
+# .RDA files
+load("filename.RDA")
+
+# Minitab Files
+library(foreign)
+data<- read.mtp("filename.mtp")
