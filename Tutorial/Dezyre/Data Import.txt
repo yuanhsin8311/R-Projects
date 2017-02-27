@@ -1,4 +1,4 @@
-# Data Import Techniques
+### Data Import Techniques
 
 # Tips while reading data into R
 # make sure that first row contains header and first column contains row names (ID, name etc)
@@ -6,16 +6,19 @@
 # coulmn names should be shorter as replacing " " with "."
 # try to avoid names using special symbols: "?,$,#,@,!,%,^,&,*,(,),[,],{,},| "
 # avoid cell merge in excel spreadsheet
-# delet the comments on any cell in an excel book
+# delete the comments on any cell in an excel book
+
 rm(list=ls())
-In [ ]:
+
 ls()
 rm("fit")
+
 ls()
 rm(list=ls())
-ls()
+
 
 getwd()
+[1] "/Users/yuanhsinhuang/Data Scientist/HW/0226/R/Coupon"
 
 setwd("location of the data files")
 
