@@ -1,0 +1,217 @@
+# statstical concepts: lynda videos, Anderson's Stats book 
+# domain: secondary research
+# tools: 1. R, R-Studio, 2. (Python), 3. Spark/4. Hadoop
+# visualization: r libraries
+# computing:
+
+# easy steps of becoming a data scientist(6 months)
+# step 1: research around the domain of your interest
+    #1. what are the key problems in this domain(example: telecom: churn prediction, retail: sales, banking: segmentation
+    # and fraud detection, default prediction)
+    #2. how people solve it currently
+    #3. is there any data involved in solution: Yes, how you can augment the solution by adding more data
+                                            # No, how you can create data capture process
+    #4. if data is there: is it a classification/ regresion or any other problem
+    #5. apply techniques as defined in next step
+
+# step 2: problem conversion
+    #1. convert business problem to a math or stat problem
+    #2. apply math or stat model to solve the problem
+    #3. convert the math/stat solution to a business solution
+
+# step 3: identify a tool/programming/utility/stats
+    #1. easy to learn tool: (R (statistical/ML)(10-20%), Python(complex prog/ML)(15-25%), Spark(big datasets)(5-10%))
+    #2. learn statistics: probability by Khan Academy,Statistics(http://www.mv.helsinki.fi/home/jmisotal/BoS.pdf), Algebra by  Khan Academy
+    #3. do coding (1 hour)
+
+# step 4: Learn ML, (20 most popular ML algorithms)
+    #1. in DSR class
+    #2. hands on experience on ML algorithms and it's tuning parameters
+    
+# step 5: learn math/stat
+    #1. you need to understand the math behind all the models
+    #2. in the DSR class
+
+# step 6: participate in hacking competitions/events
+    #1. attend hackerday (Dezyre)
+    #2. online data science meet ups
+    #3. read data science blogs
+
+# step 7: Practice, Practice and Practice
+    #1. kaggle.com
+    #2. do coding
+
+# Type A: math/stat, prog, vizualization (115,000USD) (SQL, R or Python)
+# Type B: Big data/coding/comp science/ETL large datasets, implement requests from Type A (100,000USD)(hadoop/spark,MongoDB)
+# Type C: requirement gathering/ analysis plan/ presentation,statistics, communication (70,000USD) (Tableau, Excel)
+
+# Type A + B: (225,000USD)
+# Type A + C: NA
+# Type B + C: (128,000USD)
+
+# Indeed.com
+# data type (lib)
+# data import/export (lib)
+# data management (lib)
+# data summarizaion/aggregation(lib)
+# basic statistics (lib)
+# advanced statistics(lib)
+# statistical Modeling (lib)
+# ML (lib)
+# visualization (lib)
+# SQL (lib)
+
+#https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.data
+Attribute Information:
+    1. CRIM      per capita crime rate by town
+    2. ZN        proportion of residential land zoned for lots over 
+                 25,000 sq.ft.
+    3. INDUS     proportion of non-retail business acres per town
+    4. CHAS      Charles River dummy variable (= 1 if tract bounds 
+                 river; 0 otherwise)
+    5. NOX       nitric oxides concentration (parts per 10 million)
+    6. RM        average number of rooms per dwelling
+    7. AGE       proportion of owner-occupied units built prior to 1940
+    8. DIS       weighted distances to five Boston employment centres
+    9. RAD       index of accessibility to radial highways
+    10. TAX      full-value property-tax rate per $10,000
+    11. PTRATIO  pupil-teacher ratio by town
+    12. B        1000(Bk - 0.63)^2 where Bk is the proportion of blacks 
+                 by town
+    13. LSTAT    % lower status of the population
+    14. MEDV     Median value of owner-occupied homes in $1000's
+
+df <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.data",header=F, sep="")
+
+names(df)<-c("CRIM","ZN","INDUS","CHAS","NOX","RM","AGE","DIS","RAD","TAX","PTRATIO","B","LSTAT","MEDV")
+
+colnames(df)
+Out[]:
+'CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT' 'MEDV'
+
+head(df)
+Out[]:
+CRIM	ZN	INDUS	CHAS	NOX	RM	AGE	DIS	RAD	TAX	PTRATIO	B	LSTAT	MEDV
+1	0.00632	18	2.31	0	0.538	6.575	65.2	4.09	1	296	15.3	396.9	4.98	24
+2	0.02731	0	7.07	0	0.469	6.421	78.9	4.9671	2	242	17.8	396.9	9.14	21.6
+3	0.02729	0	7.07	0	0.469	7.185	61.1	4.9671	2	242	17.8	392.83	4.03	34.7
+4	0.03237	0	2.18	0	0.458	6.998	45.8	6.0622	3	222	18.7	394.63	2.94	33.4
+5	0.06905	0	2.18	0	0.458	7.147	54.2	6.0622	3	222	18.7	396.9	5.33	36.2
+6	0.02985	0	2.18	0	0.458	6.43	58.7	6.0622	3	222	18.7	394.12	5.21	28.7
+
+dim(df)
+Out[]:
+506 14
+
+str(df)
+'data.frame':	506 obs. of  14 variables:
+ $ CRIM   : num  0.00632 0.02731 0.02729 0.03237 0.06905 ...
+ $ ZN     : num  18 0 0 0 0 0 12.5 12.5 12.5 12.5 ...
+ $ INDUS  : num  2.31 7.07 7.07 2.18 2.18 2.18 7.87 7.87 7.87 7.87 ...
+ $ CHAS   : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ NOX    : num  0.538 0.469 0.469 0.458 0.458 0.458 0.524 0.524 0.524 0.524 ...
+ $ RM     : num  6.58 6.42 7.18 7 7.15 ...
+ $ AGE    : num  65.2 78.9 61.1 45.8 54.2 58.7 66.6 96.1 100 85.9 ...
+ $ DIS    : num  4.09 4.97 4.97 6.06 6.06 ...
+ $ RAD    : int  1 2 2 3 3 3 5 5 5 5 ...
+ $ TAX    : num  296 242 242 222 222 222 311 311 311 311 ...
+ $ PTRATIO: num  15.3 17.8 17.8 18.7 18.7 18.7 15.2 15.2 15.2 15.2 ...
+ $ B      : num  397 397 393 395 397 ...
+ $ LSTAT  : num  4.98 9.14 4.03 2.94 5.33 ...
+ $ MEDV   : num  24 21.6 34.7 33.4 36.2 28.7 22.9 27.1 16.5 18.9 ...
+
+summary(df)
+Out[]:
+      CRIM                ZN             INDUS            CHAS        
+ Min.   : 0.00632   Min.   :  0.00   Min.   : 0.46   Min.   :0.00000  
+ 1st Qu.: 0.08204   1st Qu.:  0.00   1st Qu.: 5.19   1st Qu.:0.00000  
+ Median : 0.25651   Median :  0.00   Median : 9.69   Median :0.00000  
+ Mean   : 3.61352   Mean   : 11.36   Mean   :11.14   Mean   :0.06917  
+ 3rd Qu.: 3.67708   3rd Qu.: 12.50   3rd Qu.:18.10   3rd Qu.:0.00000  
+ Max.   :88.97620   Max.   :100.00   Max.   :27.74   Max.   :1.00000  
+      NOX               RM             AGE              DIS        
+ Min.   :0.3850   Min.   :3.561   Min.   :  2.90   Min.   : 1.130  
+ 1st Qu.:0.4490   1st Qu.:5.886   1st Qu.: 45.02   1st Qu.: 2.100  
+ Median :0.5380   Median :6.208   Median : 77.50   Median : 3.207  
+ Mean   :0.5547   Mean   :6.285   Mean   : 68.57   Mean   : 3.795  
+ 3rd Qu.:0.6240   3rd Qu.:6.623   3rd Qu.: 94.08   3rd Qu.: 5.188  
+ Max.   :0.8710   Max.   :8.780   Max.   :100.00   Max.   :12.127  
+      RAD              TAX           PTRATIO            B         
+ Min.   : 1.000   Min.   :187.0   Min.   :12.60   Min.   :  0.32  
+ 1st Qu.: 4.000   1st Qu.:279.0   1st Qu.:17.40   1st Qu.:375.38  
+ Median : 5.000   Median :330.0   Median :19.05   Median :391.44  
+ Mean   : 9.549   Mean   :408.2   Mean   :18.46   Mean   :356.67  
+ 3rd Qu.:24.000   3rd Qu.:666.0   3rd Qu.:20.20   3rd Qu.:396.23  
+ Max.   :24.000   Max.   :711.0   Max.   :22.00   Max.   :396.90  
+     LSTAT            MEDV      
+ Min.   : 1.73   Min.   : 5.00  
+ 1st Qu.: 6.95   1st Qu.:17.02  
+ Median :11.36   Median :21.20  
+ Mean   :12.65   Mean   :22.53  
+ 3rd Qu.:16.95   3rd Qu.:25.00  
+ Max.   :37.97   Max.   :50.00  
+
+
+# With the par( ) function, you can include the option mfrow=c(nrows, ncols) to create a matrix of nrows x ncols plots that are filled in by row. mfcol=c(nrows, ncols) fills in the matrix by columns.par(mfrow=c(4,4))
+
+plot(density(df$CRIM));plot(density(df$ZN));plot(density(df$INDUS));plot(density(df$CHAS));plot(density(df$NOX))
+plot(density(df$RM));plot(density(df$AGE));plot(density(df$DIS));plot(density(df$RAD));plot(density(df$TAX))
+plot(density(df$PTRATIO));plot(density(df$B));plot(density(df$LSTAT));plot(density(df$MEDV))
+
+
+In [24]:
+shapiro.test(df$CRIM) #check normality
+Out[24]:
+	Shapiro-Wilk normality test
+
+data:  df$CRIM
+W = 0.44996, p-value < 2.2e-16
+In [26]:
+table(df$CHAS);table(df$RAD)
+Out[26]:
+  0   1 
+471  35 
+Out[26]:
+  1   2   3   4   5   6   7   8  24 
+ 20  24  38 110 115  26  17  24 132 
+In [27]:
+library(corrplot)
+In [31]:
+corrplot(cor(df[,c(-4,-9)]),"ellipse")
+In [32]:
+fit<-lm(MEDV~.,data=df)
+In [33]:
+summary(fit)
+Out[33]:
+Call:
+lm(formula = MEDV ~ ., data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-15.595  -2.730  -0.518   1.777  26.199 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  3.646e+01  5.103e+00   7.144 3.28e-12 ***
+CRIM        -1.080e-01  3.286e-02  -3.287 0.001087 ** 
+ZN           4.642e-02  1.373e-02   3.382 0.000778 ***
+INDUS        2.056e-02  6.150e-02   0.334 0.738288    
+CHAS         2.687e+00  8.616e-01   3.118 0.001925 ** 
+NOX         -1.777e+01  3.820e+00  -4.651 4.25e-06 ***
+RM           3.810e+00  4.179e-01   9.116  < 2e-16 ***
+AGE          6.922e-04  1.321e-02   0.052 0.958229    
+DIS         -1.476e+00  1.995e-01  -7.398 6.01e-13 ***
+RAD          3.060e-01  6.635e-02   4.613 5.07e-06 ***
+TAX         -1.233e-02  3.760e-03  -3.280 0.001112 ** 
+PTRATIO     -9.527e-01  1.308e-01  -7.283 1.31e-12 ***
+B            9.312e-03  2.686e-03   3.467 0.000573 ***
+LSTAT       -5.248e-01  5.072e-02 -10.347  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.745 on 492 degrees of freedom
+Multiple R-squared:  0.7406,	Adjusted R-squared:  0.7338 
+F-statistic: 108.1 on 13 and 492 DF,  p-value: < 2.2e-16
+In [34]:
+vif(fit)
+Error in eval(expr, envir, enclos): could not find function "vif"
