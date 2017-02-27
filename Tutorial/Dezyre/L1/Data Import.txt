@@ -1,63 +1,66 @@
-### Data Import Techniques
+###### Data Import Techniques ######
 
-# Tips while reading data into R
-# make sure that first row contains header and first column contains row names (ID, name etc)
-# "Customer Name"- avoid giving spaces between the names of the columns
-# coulmn names should be shorter as replacing " " with "."
-# try to avoid names using special symbols: "?,$,#,@,!,%,^,&,*,(,),[,],{,},| "
-# avoid cell merge in excel spreadsheet
-# delete the comments on any cell in an excel book
+## Tips while reading data into R
+1. make sure that first row contains header and first column contains row names (ID, name etc)
+2. "Customer Name"- avoid giving spaces between the names of the columns
+3. coulmn names should be shorter as replacing " " with "."
+4. try to avoid names using special symbols: "?,$,#,@,!,%,^,&,*,(,),[,],{,},| "
+5. avoid cell merge in excel spreadsheet
+6. delete the comments on any cell in an excel book
 
-rm(list=ls())
-
-ls()
-rm("fit")
-
-ls()
-rm(list=ls())
-
-
+##
 getwd()
 [1] "/Users/yuanhsinhuang/Data Scientist/HW/0226/R/Coupon"
 
+ls()
+ [1] "conversion_data" "cpatr"           "cpdtr"          
+ [4] "cplte"           "cpltr"           "cpvtr"          
+ [7] "data"            "data_country"    "names.arg"      
+[10] "ulist"   
+
+rm("data")
+
+rm(list=ls())
+
 setwd("location of the data files")
 
-# Importing Data Files Into R
+## Importing Data Files Into R
 
-# Text File
+1. Text File
 data <- read.table("tryTextImport.txt")
 # output format is a data frame
 
-# CSV files
+2. CSV files
 head(mtcars)
-data <- read.table("mycsv.csv",
-                   header=T,
-                   sep=",")
+data <- read.table("mycsv.csv",header=TRUE,sep=",")
 
 data<-read.csv("mycsv.csv")
 
-data<-read.csv2("mycsv.csv",
-                header = F)
+data<-read.csv2("mycsv.csv",header = FALSE)
 
-# Files with Separator chanracter
+3. Files with Separator character
 data<-read.delim("filename.ext")
 
 data<-read.delim2("filename.ext")
 
-
-# Excel File
+4. Excel File
 install.packages("readxl")
 library(readxl)
 data <- read_excel("myexcle.xlsx",sheet = 1)
 
-
-# JSON File import
+5. JSON File import
 installed.packages()
 install.packages("rjson")
 library(rjson)
 data <- fromJSON(file="finename.json")
 
-# XML Files
+install.packages("rjson")
+library(rjson)
+data <- fromJSON("")
+
+
+
+6. XML Files
 install.packages("XML")
 library(XML)
 data <- xmlTreeParse("web URL to the XML data")
@@ -66,36 +69,36 @@ topxml<-xmlSApply(topnodes,
                  function(x) xmlSApply(x,xmlValue))
 df <- data.frame(t(topxml),row.names = NULL)
 
-# HTML Table
+7. HTML Table
 library(XML)
 url <- "http://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html"
 data_df <- readHTMLTable(url,which = 4)
 head(data_df)
 
-# SPSS Files
+8. SPSS Files
 install.packages("foreign")
 library(foreign)
 # read.spss output is by default a list
 data_spss <- read.spss("filename.sav",
                        to.data.frame = T,
                        use.value.labels = F)
-# STATA files
+9. STATA files
 library(foreign)
 data<-read.dta("filename")
 
-# Systat Files
+10. Systat Files
 library(foreign)
 data <- read.systat("filename")
 
-# SAS files
+11. SAS files
 install.packages("sas7bdat")
 library(sas7bdat)
 data_sas <- read.sas7bdat("filename.sas7bdat")
 
 
-# .RDA files
+12. .RDA files
 load("filename.RDA")
 
-# Minitab Files
+13. Minitab Files
 library(foreign)
 data<- read.mtp("filename.mtp")
