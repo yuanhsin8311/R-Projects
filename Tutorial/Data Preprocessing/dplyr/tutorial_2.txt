@@ -11,7 +11,7 @@ In addition, dplyr contains a useful function to perform another common task whi
 ## How does it compare to using base functions R?
 If you are familiar with R, you are probably familiar with base R functions such as split(), subset(), apply(), sapply(), lapply(), tapply() and aggregate(). Compared to base functions in R, the functions in dplyr are easier to work with, are more consistent in the syntax and are targeted for data analysis around data frames instead of just vectors.
 
-***** split(), subset(),tapply() and aggregate()
+***** split(), subset(),tapply() and aggregate()************************************************************************
 ## 
 1. apply(X, MARGIN, FUN, ...)
 where:
@@ -43,7 +43,7 @@ sapply() is a ‘wrapper’ function for lapply().
 
 
 
-
+**************************************************************************************************************************
 ## How do I get dplyr?
 1. To install dplyr
 install.packages("dplyr")
