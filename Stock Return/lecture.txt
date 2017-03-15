@@ -1,0 +1,88 @@
+The goal of the course:
+1. Get the basic ideas of time series and statistics
+2. Get some programming experience with R
+3. Get to know data analysis
+
+Why time series:
+1. To forecast based on current data
+2. To see the relationship between current data and past data
+
+Time series and others:
+1. CAPM
+2. Machine Learning
+3. Hypothesis Test
+
+Standard Method to do time series:
+1. Plot time series
+2. Transform to get stationary time series
+3. Fit a model to stationary time series
+4. Carry on diagnostic checks
+5. Generate forecast to the model
+6. Invert transformations
+
+
+### What is stationary ?
+In mathematics and statistics, a stationary process (a.k.a. a strict(ly) stationary process or strong(ly) stationary process) 
+is a stochastic process whose joint probability distribution does not change when shifted in time.
+A weaker form of stationarity commonly employed in signal processing is known as 
+(1)weak-sense stationarity (2)wide-sense stationarity (WSS) (3) covariance stationarity, (4) second-order stationarity.
+ 
+### Test for stationary:
+ADF test
+Assumption: the time series is not stationary
+
+> adf.test(as.numeric(adj_BLK,alternative='s')
+  
+       Augmented Dickey-Fuller Test
+data:  as.numeric(adj_BLK)
+Dickey-Fuller = -2.1694, Lag order = 16, p-value = 0.5066
+alternative hypothesis: stationary
+
+> adf.test(as.numeric(adj_BLK_ret),alternative='s')  
+
+       Augmented Dickey-Fuller Test
+data:  as.numeric(adj_BLK_ret)
+Dickey-Fuller = -15.73, Lag order = 16, p-value = 0.01
+alternative hypothesis: stationary
+
+Warning message:
+In adf.test(as.numeric(adj_BLK_ret), alternative = "s") :
+  p-value smaller than printed p-value
+
+### Key components in time series:
+Mean model: ARIMA 
+Volatility model: GARCH (generalized autoregressive conditional heteroskedasticity)
+
+### Test for autocorrelation: 
+What is autocorrelation:
+In statistics, the autocorrelation of a random process is the correlation between values of the process at different times, 
+as a function of the two times or of the time lag. 
+Let X be a stochastic process, and t be any point in time. 
+(t may be an integer for a discrete-time process or a real number for a continuous- time process.) 
+Then Xt is the value (or realization) produced by a given run of the process at time t. 
+Suppose that the process has mean μt and variance σt2 at time t, for each t. 
+Then the definition of the autocorrelation between times s and t is
+
+
+
+
+
+
+
+
+
+
+Mean model: ARIMA Volatility model: GARCH Test for autocorrelation: What is autocorrelation:
+In statistics, the autocorrelation of a random process is the correlation between values of the process at different times, as a function of the two times or of the time lag. Let X be a stochastic process, and t be any point in time. (t may be an integer for a discrete-time process or a real number for a continuous- time process.) Then Xt is the value (or realization) produced by a given run of the process at time t. Suppose that the process has mean μt and variance σt2 at time t, for each t. Then the definition of the autocorrelation between times s and t is
+ACF test
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
