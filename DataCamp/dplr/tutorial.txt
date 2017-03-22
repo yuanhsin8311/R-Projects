@@ -2,3 +2,10 @@ hflights %>%
 group_by(UniqueCarrier) %>%
 summarise(avgDep=mean(DepDelay,na.rm=T),avgArr = mean(ArrDelay,na.rm = T)) %>%
 arrange(avgArr, avgDep)
+
+# dplyr and database
+data frame
+data table tbl_dt
+database tbl
+
+# always preserve row order -- join vs merge
