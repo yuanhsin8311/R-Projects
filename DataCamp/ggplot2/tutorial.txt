@@ -1,0 +1,62 @@
+# Data + Aesthetics + Geometries + Facets + Statistics + Coordinates + theme
+
+
+> levels(iris$Species) <- c("Setosa","Versicolor","Virginica")
+> ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width))
++ geom_jitter(alpha =0.6)
++ facet_grid(. ~ Species) 
++ stat_smooth(method = "lm" , se = F,col="red")
++ scale_y_continuous("Speal With (cm)",limits=c(2,5),expand=c(0,0))
++ scale_y_continuous("Sepal Length (cm)",limits = c(4,8),expand = c(0,0))
++ coord_equal()
++ theme(panel.background = element_blank(),
+        plot.background = element_blank(),
+        legend.background = element_blank(),
+        legend.key = element_blank(),
+        strip.background = element_blank(),
+        axis.text = element_text(colour = "black",
+        axis.ticks = element_line(colour="black",
+        panel.grid.major = elemet_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(colour="black",
+        strip.text = elemet_blank(),
+        panel.margin = unit(1,"lines")
+        
+# Explore ggplot2
+ggplot(diamonds,aes(x=carat,y=price))
++ geom_point()
++ geom_smooth()
+
+ggplot(diamonds,aes(x=carat,y=price,col=clarity))
++ geom_smooth()
+
+ggplot(diamonds,aes(x=carat,y=price,col=clarity))
++ geom_point(alpha=0.4)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
