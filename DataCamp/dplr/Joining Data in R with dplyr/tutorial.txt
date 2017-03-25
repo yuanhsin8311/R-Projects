@@ -1,0 +1,62 @@
+### Mutating Join: inner_join(), full_join(), right_join(), left_join()
+left_join(tableA,tableB,by="name")
+left_join(tableA,tableB,by=c("name","surname"))
+right_join
+inner_join
+full_join
+
+#tables
+data frames/ tibbles(tbl_df) / tbl references
+
+library(tibble)
+as.tibble(mtcars)
+
+setequal(bands2,bands3)
+
+# mutating join
+pressure[1:4,]
+mutate(pressure[1:4,],fahrenheit = temperature * 1.8 +32)
+
+# pipe operator
+(1) abs(diff(range(x)))
+(2) x %>% 
+      range() %>%
+      diff()  %>%
+      abs()
+      
+### Filtering Join : semi_join, anti_join
+# View the output of semi_join()
+artists %>% 
+  semi_join(songs, by = c("first", "last"))
+
+# Create the same result
+artists %>% 
+  right_join(songs, by = c("first", "last")) %>% 
+  filter(!is.na(instrument)) %>% 
+  select(first, last, instrument)
+
+# count number
+albums %>% 
+  # Collect the albums made by a band
+  semi_join(bands, by = "band") %>% 
+  # Count the albums made by a band
+  nrow()
+
+# anti_join: debugging tactic for joins.
+  # Check whether album names in labels are mis-entered
+     labels %>% 
+     anti_join(albums, by = "album")
+     
+### Set Operator: union(), intersect(), setdiff()
+### Comparing datasets
+setequal()
+identical() : row order is same, then return true
+
+### semi-join ---> intersect
+    anti-join ---> setdiff
+
+
+
+
+
+
