@@ -1,0 +1,136 @@
+## Downloading open data
+```
+download.file('http://real-chart.finance.yahoo.com/table.csv?s=%5EGSPC&d=6&e=3&f=2015&g=d&a=0&b=3&c=1950&ignore=.csv', 'snp500.csv')
+getwd()
+list.files('./')
+
+install.packages("RCurl")
+library(RCurl)
+rows <- getURL("https://nycopendata.socrata.com/api/views/jd4g-ks2z/rows.csv?accessType=DOWNLOAD")
+```
+
+## Reading and Writing CSV Files 
+```
+getwd()
+list.files('./')
+stock_data <- read.table('snp500.csv', sep=',' , header=TRUE)
+subset_data <- stock_data[1:6, c("Date", "Open", "High", "Low", "Close")]
+head(stock_data)
+stock_data2 <- read.csv('snp500.csv', header=TRUE)
+head(stock_data2)
+wifi_hotspot <- read.csv(text = rows)
+```
+
+## Scanning Text Files
+```
+stock_data3 = scan('snp500.csv',sep=',', what=list(Date = '', Open = 0, High = 0, Low = 0,Close = 0, Volume = 0, Adj_Close = 0),  skip=1, fill=T)
+mode(stock_data3)
+
+download.file("https://github.com/ywchiu/rcookbook/raw/master/chapter2/weather.op", "weather.op")
+weather <- read.fwf("weather.op", widths = c(6,6,10,11,9,8), col.names = c("STN","WBAN","YEARMODA","TEMP","MAX","MIN"), skip=1)
+head(weather)
+names(weather)
+```
+
+## Working with Excel File
+```
+install.packages("xlsx")
+library(xlsx)
+download.file("http://api.worldbank.org/v2/en/topic/3?downloadformat=excel", "worldbank.xls", mode="wb")
+options(java.parameters = "-Xmx2000m")
+wb = read.xlsx2("worldbank.xls", sheetIndex = 1, startRow = 4)
+wb2 = wb[c("Country.Name","Country.Code","Indicator.Name","Indicator.Code", "X2014")]
+dim(wb2)
+write.xlsx2(wb2, "2014wbdata.xlsx", sheetName = "Sheet1")
+```
+
+## Reading Data from Database
+```
+install.packages("RJDBC")
+library(RJDBC)
+drv <- JDBC("com.mysql.jdbc.Driver",
+      "C:\\Program Files\\MySQL\\mysql-connector-java-5.0.8-bin.jar"
+      )
+conn <- dbConnect(drv,
+                  "jdbc:mysql://localhost:3306/finance",
+                  "root",
+                  "test")
+dbListTables(conn)
+trade_data <- dbGetQuery(conn, "SELECT * FROM majortrade")
+dbDisconnect(conn)
+
+install.packages("RMySQL")
+library(RMySQL)
+mydb = dbConnect(MySQL(), user='root', password='test', host='localhost')
+dbSendQuery(mydb, "USE finance")
+fetch(dbSendQuery(mydb, "SELECT * FROM majortrade;"))
+```
+
+## Scraping Web Data
+```
+install.packages("rvest")
+library(rvest)
+spx_quote <- html("http://www.bloomberg.com/quote/SPX:IND")
+cell  <- spx_quote %>% html_nodes(".cell")
+label <- cell %>%
+    html_nodes(".cell__label")  %>%
+    html_text() %>%
+    lapply(function(e)gsub("\n|\\s+", "", e))
+value <- cell %>%
+    html_nodes(".cell__value") %>%
+    html_text() %>%
+    lapply(function(e)gsub("\n|\\s+", "", e))
+names(value) <- title
+energy <- html("http://www.bloomberg.com/energy")
+energy.table = energy %>% html_node(".data-table") %>% html_table()
+
+install.packages("RSelenium")
+library(RSelenium)
+remDr <- remoteDriver(remoteServerAddr = "localhost"
+                     , port = 4444
+                     , browserName = "firefox"
+)
+remDr$getStatus()
+remDr$open()
+remDr$navigate("http://www.bloomberg.com/quote/SPX:IND ")
+webElem <- remDr$findElements('css selector', ".cell")
+webData = sapply(webElem, function(x){
+  label = x$findChildElement('css selector', '.cell__label')
+  value = x$findChildElement('css selector', '.cell__value')
+  cbind(c("label" = label$getElementText(), "value" = value$getElementText()))
+}
+)
+```
+
+## Accessing Facebook Data
+```
+access_token = '<access_token>'
+fb_data <- html(sprintf("https://graph.facebook.com/me/tagged_places?access_token=%s",access_token))
+install.packages("rjson")
+library(rjson)
+fb_json <-  fromJSON(fb_data %>% html_text())
+fb_place = sapply(fb_json$data, function(e){e$place$name})
+fb_id = sapply(fb_json$data, function(e){e$place$id})
+data.frame(place = fb_place, id = fb_id)
+
+install.packages("Rfacebook")
+library(Rfacebook)
+getUsers("me", "<access_token>")
+```
+
+## Working with Rtwitter 
+```
+install.packages("twitteR")
+library(twitteR)
+
+consumer_key <- '<consumer_key>'
+consumer_secret <- '<consumer_secret>'
+access_token <- '<access_token>'
+access_secret <- '<access_secret>'
+setup_twitter_oauth(consumer_key,
+                    consumer_secret,
+                    access_token,
+                    access_secret)
+
+res <- searchTwitter("world cup", n=100)
+```
